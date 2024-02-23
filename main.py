@@ -18,8 +18,13 @@ nombre_groupes = 2
 def tirage_et_affichage():
     nombre_sous_groupes_a = int(entry_a.get())
     nombre_sous_groupes_b = int(entry_b.get())
+
+
+    
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
+
+    
     bouton_tirage.destroy()
     label_a.destroy()
     entry_a.destroy()
@@ -30,11 +35,35 @@ def tirage_et_affichage():
     label_c.destroy()
     entry_c.destroy()
 
+    # Create a canvas in the root window
+    canvas = tk.Canvas(root)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Add a scrollbar for the canvas
+    scrollbar = tk.Scrollbar(root, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Function to resize the canvas scrolling region
+    def resize_canvas(event):
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    # Bind the resize_canvas function to the <Configure> event of the canvas
+    canvas.bind("<Configure>", resize_canvas)
+
+    # Create a frame inside the canvas to contain all the group frames
+    container = tk.Frame(canvas)
+    container.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+    # Add the container frame to the canvas
+    canvas.create_window((0, 0), window=container, anchor="nw")
+
+    # Now, create and add all the group frames to the container frame
     for i, groupe in enumerate(sous_groupes):
-        group_frame = tk.Frame(root)
+        group_frame = tk.Frame(container)
         group_frame.grid(row=0, column=i, padx=10, pady=10, sticky="nw")
 
-        section_label = tk.Label(group_frame, text=f"Groupe {'A' if i == 0 else 'B'}")
+        section_label = tk.Label(group_frame, text=f"Compagnie {'Alpha' if i == 0 else 'Bravo'}")
         section_label.grid(row=0, column=0, padx=10, pady=5, sticky="nw")
 
         for j, sous_groupe in enumerate(groupe):
@@ -43,13 +72,14 @@ def tirage_et_affichage():
 
             subgroup_frame = tk.Frame(group_frame)
             subgroup_frame.grid(row=j*2+2, column=0, padx=10, pady=5, sticky="nw")
-            scrollbar = tk.Scrollbar(subgroup_frame)
-            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-            sublistbox = tk.Listbox(subgroup_frame, yscrollcommand=scrollbar.set, width=30, height=5)
+
+            sublistbox = tk.Listbox(subgroup_frame, width=30, height=15)
             sublistbox.pack(side=tk.LEFT, fill=tk.BOTH)
-            scrollbar.config(command=sublistbox.yview)
             for personne in sous_groupe:
-                sublistbox.insert(tk.END, f"{personne['prenom']} {personne['nom']}, {personne['sexe']}, {personne['bus_no']}")
+                sublistbox.insert(tk.END, f"{personne['prenom']} {personne['nom']}, {personne['date_naissance']}, {personne['sexe']}, {personne['email']}, {personne['telephone']}, {personne['code_postal']}, {personne['ville']}, {personne['departement']}, {personne['niveau']}, {personne['bus_no']}")
+
+    # Update the canvas scrolling region
+    resize_canvas(None)
 
 
 #Tkinter part
