@@ -21,7 +21,6 @@ def tirage_et_affichage():
     
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
-
     
     bouton_tirage.destroy()
     label_a.destroy()
