@@ -18,8 +18,6 @@ nombre_groupes = 2
 def tirage_et_affichage():
     nombre_sous_groupes_a = int(entry_a.get())
     nombre_sous_groupes_b = int(entry_b.get())
-
-
     
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
