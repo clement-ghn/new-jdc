@@ -27,8 +27,6 @@ def tirage_et_affichage():
     entry_a.destroy()
     label_b.destroy()
     entry_b.destroy()
-    #noms_maisons = ["Anemones", "Brimbelles", "Genets", "Jonquilles", "Bruyeres", "Sapins", "Soyotte", "tableau en plus"]
-    noms_maisons = [maison.strip() for maison in entry_c.get().split(",")]
     label_c.destroy()
     entry_c.destroy()
 
@@ -64,7 +62,7 @@ def tirage_et_affichage():
         section_label.grid(row=0, column=0, padx=10, pady=5, sticky="nw")
 
         for j, sous_groupe in enumerate(groupe):
-            subgroup_label = tk.Label(group_frame, text= noms_maisons[j] if i == 0 else noms_maisons[j+nombre_sous_groupes_a])
+            subgroup_label = tk.Label(group_frame, text=f"{'A' if i == 0 else 'B'}{j+1}")
             subgroup_label.grid(row=j*2+1, column=0, padx=10, pady=5, sticky="nw")  # Utilisation de j*2+1 pour espacer les libellés
 
             subgroup_frame = tk.Frame(group_frame)

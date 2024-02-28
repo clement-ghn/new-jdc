@@ -9,9 +9,6 @@ def decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b):
         taille_sous_groupe_a = ceil(len(hommes) / nombre_sous_groupes_a)
         taille_sous_groupe_b = ceil(len(femmes) / nombre_sous_groupes_b)
 
-
-
-
         hommes_restants = hommes.copy()
         femmes_restantes = femmes.copy()
 
