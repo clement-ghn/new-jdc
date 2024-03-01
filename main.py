@@ -21,14 +21,12 @@ def tirage_et_affichage():
     
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
-    
+
     bouton_tirage.destroy()
     label_a.destroy()
     entry_a.destroy()
     label_b.destroy()
     entry_b.destroy()
-    label_c.destroy()
-    entry_c.destroy()
 
     # Create a canvas in the root window
     canvas = tk.Canvas(root)
@@ -70,11 +68,22 @@ def tirage_et_affichage():
 
             sublistbox = tk.Listbox(subgroup_frame, width=30, height=15)
             sublistbox.pack(side=tk.LEFT, fill=tk.BOTH)
+
+            maison_homme=[]
+            maison_femme=[]
+
             for personne in sous_groupe:
                 sublistbox.insert(tk.END, f"{personne['prenom']} {personne['nom']}, {personne['date_naissance']}, {personne['sexe']}, {personne['email']}, {personne['telephone']}, {personne['code_postal']}, {personne['ville']}, {personne['departement']}, {personne['niveau']}, {personne['bus_no']}")
+                if personne['sexe'] == 'Homme':
+                    maison_homme.append(f"{personne['prenom']} {personne['nom']}")
+                elif personne['sexe'] == 'Femme':
+                    maison_femme.append(f"{personne['prenom']} {personne['nom']}")
 
     # Update the canvas scrolling region
     resize_canvas(None)
+    print(maison_homme)
+    print("///")
+    print(maison_femme)
 
 
 #Tkinter part
@@ -88,11 +97,6 @@ label_b = tk.Label(root, text="Nombre de sous-groupes pour Groupe B:")
 label_b.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 entry_b = tk.Entry(root)
 entry_b.grid(row=1, column=1, padx=10, pady=5)
-
-label_c = tk.Label(root, text="Nom des maisons du groupe A")
-label_c.grid(row=0, column=2, padx=10, pady=5, sticky="w")
-entry_c = tk.Entry(root)
-entry_c.grid(row=0, column=3, padx=10, pady=5)
 
 
 bouton_tirage = tk.Button(root, text="Effectuer le tirage", command=tirage_et_affichage)

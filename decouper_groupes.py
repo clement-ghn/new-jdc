@@ -1,4 +1,6 @@
-from math import ceil,floor
+from math import ceil
+import random
+
 
 def decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b):
     sous_groupes = [[] for _ in range(len(groupes))]
