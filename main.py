@@ -18,6 +18,10 @@ nombre_groupes = 2
 def tirage_et_affichage():
     nombre_sous_groupes_a = int(entry_a.get())
     nombre_sous_groupes_b = int(entry_b.get())
+    capacite_maison_homme = 10
+    capacite_maison_femme = 26
+    maison_homme=[]
+    maison_femme=[]
     
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
@@ -68,16 +72,21 @@ def tirage_et_affichage():
 
             sublistbox = tk.Listbox(subgroup_frame, width=30, height=15)
             sublistbox.pack(side=tk.LEFT, fill=tk.BOTH)
-
-            maison_homme=[]
-            maison_femme=[]
-
+            
             for personne in sous_groupe:
                 sublistbox.insert(tk.END, f"{personne['prenom']} {personne['nom']}, {personne['date_naissance']}, {personne['sexe']}, {personne['email']}, {personne['telephone']}, {personne['code_postal']}, {personne['ville']}, {personne['departement']}, {personne['niveau']}, {personne['bus_no']}")
-                if personne['sexe'] == 'Homme':
+                if personne['sexe'] == 'Homme' and capacite_maison_homme >= 0:
                     maison_homme.append(f"{personne['prenom']} {personne['nom']}")
-                elif personne['sexe'] == 'Femme':
+                    capacite_maison_homme -=1
+                elif personne['sexe'] == 'Femme' and capacite_maison_femme >= 0:
                     maison_femme.append(f"{personne['prenom']} {personne['nom']}")
+                    capacite_maison_femme -=1
+
+            
+
+
+
+
 
     # Update the canvas scrolling region
     resize_canvas(None)
