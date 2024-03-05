@@ -20,8 +20,11 @@ def tirage_et_affichage():
     nombre_sous_groupes_b = int(entry_b.get())
     
     # Capacités des maisons
-    capacite_maison_homme = [10, 10, 10]  # Capacités pour trois maisons différentes
-    capacite_maison_femme = [26, 4, 26]  # Capacités pour trois maisons différentes
+    capacite_homme_input = entry_garcon.get()
+    capacite_femme_input = entry_fille.get()
+    
+    capacite_maison_homme = list(map(int, capacite_homme_input.split(',')))
+    capacite_maison_femme = list(map(int, capacite_femme_input.split(',')))
     
     # Maisons pour chaque sexe
     maisons_homme = [[] for _ in range(len(capacite_maison_homme))]
@@ -35,6 +38,10 @@ def tirage_et_affichage():
     entry_a.destroy()
     label_b.destroy()
     entry_b.destroy()
+    label_garcon.destroy()
+    entry_garcon.destroy()
+    label_fille.destroy()
+    entry_fille.destroy()
 
     # Create a canvas in the root window
     canvas = tk.Canvas(root)
@@ -124,7 +131,6 @@ def tirage_et_affichage():
 
 
 #Tkinter part
-
 label_a = tk.Label(root, text="Nombre de sous-groupes pour Groupe A:")
 label_a.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 entry_a = tk.Entry(root)
@@ -134,6 +140,16 @@ label_b = tk.Label(root, text="Nombre de sous-groupes pour Groupe B:")
 label_b.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 entry_b = tk.Entry(root)
 entry_b.grid(row=1, column=1, padx=10, pady=5)
+
+label_garcon = tk.Label(root, text="Capacités maisons garçons:")
+label_garcon.grid(row=0, column=2, padx=10, pady=5, sticky="w")
+entry_garcon = tk.Entry(root)
+entry_garcon.grid(row=0, column=3, padx=10, pady=5)
+
+label_fille = tk.Label(root, text="Capacités maisons filles:")
+label_fille.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+entry_fille = tk.Entry(root)
+entry_fille.grid(row=1, column=3, padx=10, pady=5)
 
 
 bouton_tirage = tk.Button(root, text="Effectuer le tirage", command=tirage_et_affichage)
