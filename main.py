@@ -18,10 +18,14 @@ nombre_groupes = 2
 def tirage_et_affichage():
     nombre_sous_groupes_a = int(entry_a.get())
     nombre_sous_groupes_b = int(entry_b.get())
-    capacite_maison_homme = 10
-    capacite_maison_femme = 26
-    maison_homme=[]
-    maison_femme=[]
+    
+    # Capacités des maisons
+    capacite_maison_homme = [10, 10, 10]  # Capacités pour trois maisons différentes
+    capacite_maison_femme = [26, 4, 26]  # Capacités pour trois maisons différentes
+    
+    # Maisons pour chaque sexe
+    maisons_homme = [[] for _ in range(len(capacite_maison_homme))]
+    maisons_femme = [[] for _ in range(len(capacite_maison_femme))]
     
     groupes = repartir_personnes(sheet, nombre_groupes)
     sous_groupes = decouper_groupes(groupes, nombre_sous_groupes_a, nombre_sous_groupes_b)
@@ -75,24 +79,48 @@ def tirage_et_affichage():
             
             for personne in sous_groupe:
                 sublistbox.insert(tk.END, f"{personne['prenom']} {personne['nom']}, {personne['date_naissance']}, {personne['sexe']}, {personne['email']}, {personne['telephone']}, {personne['code_postal']}, {personne['ville']}, {personne['departement']}, {personne['niveau']}, {personne['bus_no']}")
-                if personne['sexe'] == 'Homme' and capacite_maison_homme >= 0:
-                    maison_homme.append(f"{personne['prenom']} {personne['nom']}")
-                    capacite_maison_homme -=1
-                elif personne['sexe'] == 'Femme' and capacite_maison_femme >= 0:
-                    maison_femme.append(f"{personne['prenom']} {personne['nom']}")
-                    capacite_maison_femme -=1
+                if personne['sexe'] == 'Homme':
+                    for k, capacite in enumerate(capacite_maison_homme):
+                        if capacite > 0:
+                            maisons_homme[k].append([personne['prenom'], personne['nom']])  # Ajoutez une liste de données de personne
+                            capacite_maison_homme[k] -= 1
+                            break
+                elif personne['sexe'] == 'Femme':
+                    for k, capacite in enumerate(capacite_maison_femme):
+                        if capacite > 0:
+                            maisons_femme[k].append([personne['prenom'], personne['nom']])  # Ajoutez une liste de données de personne
+                            capacite_maison_femme[k] -= 1
+                            break
 
-            
-
-
-
-
+    # Ajout des widgets pour afficher les maisons
+    for k, maison in enumerate(maisons_homme):
+        maison_frame = tk.Frame(container)
+        maison_frame.grid(row=2*k+2, column=0, padx=10, pady=5, sticky="nw")
+        label_maison_homme = tk.Label(maison_frame, text=f"Maison Homme {k+1}")
+        label_maison_homme.pack(side=tk.TOP)
+        sublistbox_maison_homme = tk.Listbox(maison_frame, width=30, height=5)
+        sublistbox_maison_homme.pack(side=tk.LEFT, fill=tk.BOTH)
+        for personne in maison:
+            sublistbox_maison_homme.insert(tk.END, f"{personne[0]} {personne[1]}")
+        scrollbar_maison_homme = tk.Scrollbar(maison_frame, orient=tk.VERTICAL, command=sublistbox_maison_homme.yview)
+        scrollbar_maison_homme.pack(side=tk.RIGHT, fill=tk.Y)
+        sublistbox_maison_homme.configure(yscrollcommand=scrollbar_maison_homme.set)
+    
+    for k, maison in enumerate(maisons_femme):
+        maison_frame = tk.Frame(container)
+        maison_frame.grid(row=2*k+2, column=1, padx=10, pady=5, sticky="nw")
+        label_maison_femme = tk.Label(maison_frame, text=f"Maison Femme {k+1}")
+        label_maison_femme.pack(side=tk.TOP)
+        sublistbox_maison_femme = tk.Listbox(maison_frame, width=30, height=5)
+        sublistbox_maison_femme.pack(side=tk.LEFT, fill=tk.BOTH)
+        for personne in maison:
+            sublistbox_maison_femme.insert(tk.END, f"{personne[0]} {personne[1]}")
+        scrollbar_maison_femme = tk.Scrollbar(maison_frame, orient=tk.VERTICAL, command=sublistbox_maison_femme.yview)
+        scrollbar_maison_femme.pack(side=tk.RIGHT, fill=tk.Y)
+        sublistbox_maison_femme.configure(yscrollcommand=scrollbar_maison_femme.set)
 
     # Update the canvas scrolling region
     resize_canvas(None)
-    print(maison_homme)
-    print("///")
-    print(maison_femme)
 
 
 #Tkinter part
